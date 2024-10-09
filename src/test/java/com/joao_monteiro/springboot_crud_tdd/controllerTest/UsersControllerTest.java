@@ -26,7 +26,10 @@ public class UsersControllerTest {
     TestRestTemplate testRestTemplate;
     @Test
     void shouldReturnAUserWhenIsSaved(){
-        ResponseEntity<String> response = testRestTemplate.getForEntity("/users/2", String.class);
+        ResponseEntity<String> response = testRestTemplate
+                .withBasicAuth("Luis", "abc123")
+                .getForEntity("/users/2", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         DocumentContext documentContext = JsonPath.parse(response.getBody());
